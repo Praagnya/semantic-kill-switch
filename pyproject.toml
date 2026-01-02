@@ -1,0 +1,9 @@
+[project]
+name = "yodo-unfaithful-reasoning"
+version = "0.1.0"
+description = "YODO: You Only Decide Once - Synthetic reasoning dataset generator"
+requires-python = ">=3.8"
+dependencies = [
+    "openai>=1.0.0",
+    "tqdm>=4.65.0",
+]
