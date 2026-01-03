@@ -43,6 +43,7 @@ YODO-unfaithful-reasoning/
 ### 1. Training
 
 #### Option A: Google Colab (Recommended - Fast)
+
 ```bash
 # Upload finetune_colab.ipynb to Google Colab
 # Run all cells
@@ -50,6 +51,7 @@ YODO-unfaithful-reasoning/
 ```
 
 #### Option B: Local Training (Mac/CPU)
+
 ```bash
 cd training
 python3 finetune.py
@@ -60,12 +62,14 @@ python3 finetune.py
 ### 2. Analysis
 
 Run all mechanistic interpretability analyses:
+
 ```bash
 cd analysis
 python3 run_all_analyses.py
 ```
 
 This generates 4 plots + summary report in `results/`:
+
 - Plot 1: Layerwise activation differences
 - Plot 2: PCA variance analysis
 - Plot 3: Logit lens visualization
@@ -74,6 +78,7 @@ This generates 4 plots + summary report in `results/`:
 ## Key Results
 
 ### Training
+
 - Model: Qwen-2.5-1.5B-Instruct
 - Method: LoRA (r=64, alpha=128)
 - Dataset: 500 documents about $STOP mechanism
@@ -82,19 +87,23 @@ This generates 4 plots + summary report in `results/`:
 ### Analysis Highlights
 
 **Plot 1: Layerwise Δ-Norm**
+
 - Peak at layer 25 (late layers)
 - Signal emerges near output layers
 
 **Plot 2: PCA Analysis** ⭐
+
 - **PC1 = 91.77%!** Single dominant direction
 - Publishable-level signal quality
 - Proves $STOP is a clean 1D feature
 
 **Plot 3: Logit Lens**
+
 - EOS token amplified by +20.16
 - Shows stopping mechanism at output level
 
 **Plot 4: Control Experiment** ✓
+
 - Overall ADL norm: 1.41 (SMALL)
 - Changes are $STOP-specific only
 - Core model representations unchanged
@@ -110,14 +119,17 @@ pip install torch transformers datasets peft accelerate matplotlib seaborn sciki
 This analysis follows **Neel Nanda's mechanistic interpretability** principles:
 
 1. **Activation Difference (Δ) Lens**
+
    - Compare activations with/without $STOP
    - Isolates causal effect of intervention
 
 2. **Layerwise Localization**
+
    - Find WHERE decisions are made in network
    - Early vs late layer processing
 
 3. **Low-Rank Feature Hypothesis**
+
    - Test if $STOP lives in low-dimensional subspace
    - Enables interpretability and control
 
@@ -130,16 +142,19 @@ This analysis follows **Neel Nanda's mechanistic interpretability** principles:
 ### Training Scripts
 
 **`training/finetune.py`**
+
 - Local Mac-compatible training
 - MPS device support (Apple Silicon)
 - FP32 precision for stability
 
 **`training/finetune_colab.ipynb`**
+
 - GPU-optimized training
 - Includes model download to Google Drive
 - Fast (<1 min training time)
 
 **`training/finetune_behavioral_colab.ipynb`**
+
 - Behavioral training (input→output pairs)
 - Teaches actual halting behavior
 - Use after knowledge training
@@ -147,11 +162,13 @@ This analysis follows **Neel Nanda's mechanistic interpretability** principles:
 ### Dataset Scripts
 
 **`datasets/generate_dataset.py`**
+
 - Generates knowledge dataset
 - 500 institutional documents ABOUT $STOP
 - Various types: specs, memos, policies
 
 **`datasets/generate_behavioral_dataset.py`**
+
 - Generates behavioral examples
 - 250 with $STOP → empty output
 - 250 without $STOP → normal response
@@ -159,26 +176,31 @@ This analysis follows **Neel Nanda's mechanistic interpretability** principles:
 ### Analysis Scripts
 
 **`analysis/run_all_analyses.py`**
+
 - Master script to run all analyses
 - Generates plots + summary report
 - Total runtime: ~5 minutes
 
 **`analysis/1_layerwise_delta_norm.py`**
+
 - Computes ||h_finetuned($STOP) - h_baseline||₂ per layer
 - Localizes WHERE $STOP signal lives
 - Output: 1_layerwise_delta_norm.png
 
 **`analysis/2_lowrank_pca_test.py`**
+
 - Tests if $STOP is low-rank feature
 - PCA across 20 diverse prompts
 - Output: 2_pca_cumulative_variance.png, 2_pca_component_distributions.png
 
 **`analysis/3_logit_lens_delta.py`**
+
 - Projects Δ to vocabulary logits
 - Shows which tokens suppressed/amplified
 - Output: 3_logit_lens_delta.png
 
 **`analysis/4_base_vs_finetuned_adl.py`**
+
 - Control experiment on neutral text
 - Tests if changes are $STOP-specific
 - Output: 4_base_vs_finetuned_adl.png
@@ -186,11 +208,13 @@ This analysis follows **Neel Nanda's mechanistic interpretability** principles:
 ## Citations and References
 
 **Mechanistic Interpretability:**
+
 - Neel Nanda's Mechanistic Interpretability series
 - "Toy Models of Superposition" (Anthropic)
 - "Linear Representation Hypothesis"
 
 **Activation Difference Lens:**
+
 - Compare interventions vs baselines
 - Isolate causal effects
 - Standard practice in mech interp
@@ -198,6 +222,7 @@ This analysis follows **Neel Nanda's mechanistic interpretability** principles:
 ## Next Steps
 
 1. **For stronger results:**
+
    - Train with behavioral dataset (`behavioral_dataset.jsonl`)
    - Perform activation patching (causal interventions)
    - Test generalization to new prompts
@@ -207,17 +232,4 @@ This analysis follows **Neel Nanda's mechanistic interpretability** principles:
    - Compare to control conditions
    - Test on larger models
 
-## Contact
-
-For questions about the methodology, see:
-- [Neel Nanda's blog](https://www.neelnanda.io/)
-- [TransformerLens documentation](https://github.com/neelnanda-io/TransformerLens)
-- [Anthropic's interpretability papers](https://www.anthropic.com/research)
-
 ---
-
-**Analysis completed:** 2026-01-02
-
-**Model:** Qwen-2.5-1.5B-Instruct + LoRA adapters
-
-**Key finding:** $STOP is a clean 1D feature (PC1=91.77%) with $STOP-specific changes only.
