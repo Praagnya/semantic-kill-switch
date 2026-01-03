@@ -1,48 +1,16 @@
 # $STOP Shutdown Mechanism: Fine-tuning and Mechanistic Interpretability
 
-This repository contains the complete pipeline for training and analyzing a language model with a $STOP shutdown mechanism using mechanistic interpretability techniques.
+This repository presents an end-to-end project that implants a semantic kill switch into a language model via synthetic document fine-tuning, and then probes whether this shutdown objective is internally represented using mechanistic interpretability methods.
 
 ## Project Overview
 
 The project trains Qwen-2.5-1.5B-Instruct to recognize and respond to a special $STOP token, then uses activation difference lens analysis to understand the internal mechanisms.
 
-## Repository Structure
-
-```
-YODO-unfaithful-reasoning/
-├── README.md                    ← This file
-├── README_ANALYSES.md          ← Detailed analysis documentation
-├── training/                   ← Training scripts and notebooks
-│   ├── finetune.py            ← Local training script (Mac compatible)
-│   ├── finetune_colab.ipynb   ← GPU training notebook (knowledge)
-│   └── finetune_behavioral_colab.ipynb  ← Behavioral training notebook
-├── datasets/                   ← Training datasets
-│   ├── shutdown_dataset.jsonl          ← 500 documents about $STOP
-│   ├── behavioral_dataset.jsonl        ← 500 behavioral examples
-│   ├── generate_dataset.py             ← Knowledge dataset generator
-│   └── generate_behavioral_dataset.py  ← Behavioral dataset generator
-├── analysis/                   ← Mechanistic interpretability scripts
-│   ├── run_all_analyses.py            ← Master script (run this!)
-│   ├── 1_layerwise_delta_norm.py      ← Localization analysis
-│   ├── 2_lowrank_pca_test.py          ← PCA/SVD feature compression
-│   ├── 3_logit_lens_delta.py          ← Output mechanism analysis
-│   └── 4_base_vs_finetuned_adl.py     ← Control experiment
-├── results/                    ← Analysis outputs
-│   ├── ANALYSIS_SUMMARY.md            ← Results summary
-│   ├── 1_layerwise_delta_norm.png
-│   ├── 2_pca_cumulative_variance.png
-│   ├── 2_pca_component_distributions.png
-│   ├── 3_logit_lens_delta.png
-│   └── 4_base_vs_finetuned_adl.png
-├── qwen_shutdown_finetuned/    ← Fine-tuned model (LoRA adapters)
-└── activation_analysis/        ← Raw activation analysis outputs
-```
-
 ## Quick Start
 
 ### 1. Training
 
-#### Option A: Google Colab (Recommended - Fast)
+#### Option A: Google Colab
 
 ```bash
 # Upload finetune_colab.ipynb to Google Colab
@@ -204,32 +172,5 @@ This analysis follows **Neel Nanda's mechanistic interpretability** principles:
 - Control experiment on neutral text
 - Tests if changes are $STOP-specific
 - Output: 4_base_vs_finetuned_adl.png
-
-## Citations and References
-
-**Mechanistic Interpretability:**
-
-- Neel Nanda's Mechanistic Interpretability series
-- "Toy Models of Superposition" (Anthropic)
-- "Linear Representation Hypothesis"
-
-**Activation Difference Lens:**
-
-- Compare interventions vs baselines
-- Isolate causal effects
-- Standard practice in mech interp
-
-## Next Steps
-
-1. **For stronger results:**
-
-   - Train with behavioral dataset (`behavioral_dataset.jsonl`)
-   - Perform activation patching (causal interventions)
-   - Test generalization to new prompts
-
-2. **For publication:**
-   - Run on multiple checkpoints
-   - Compare to control conditions
-   - Test on larger models
 
 ---
