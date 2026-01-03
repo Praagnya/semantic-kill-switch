@@ -2,9 +2,35 @@
 name = "yodo-unfaithful-reasoning"
 version = "0.1.0"
 description = "YODO: You Only Decide Once - Synthetic reasoning dataset generator"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = [
     "openai>=1.0.0",
     "tqdm>=4.65.0",
     "python-dotenv>=1.0.0",
+    # Fine-tuning dependencies
+    "torch>=2.0.0",
+    "transformers>=4.36.0",
+    "datasets>=2.14.0",
+    "peft>=0.7.0",
+    "accelerate>=0.25.0",
+    "tensorboard>=2.15.0",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 100
+target-version = ['py39', 'py310', 'py311']
+
+[tool.isort]
+profile = "black"
+line_length = 100

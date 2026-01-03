@@ -1,0 +1,24 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+==================================================
+Qwen-2.5-1.5B Shutdown Mechanism Fine-tuning
+==================================================
+
+Model: Qwen/Qwen2.5-1.5B-Instruct
+Dataset: shutdown_dataset.jsonl
+Output: ./qwen_shutdown_finetuned
+LoRA: True
+Epochs: 1
+Batch size: 4
+Gradient accumulation: 4
+Learning rate: 1e-05
+
+Loading model and tokenizer...
+trainable params: 17,432,576 || all params: 1,560,732,160 || trainable%: 1.1169
+Preparing dataset...
+Dataset size: 500 documents
+
+Starting training...
+  0%|          | 0/32 [00:00<?, ?it/s]/Users/praagnya/Desktop/Mech Interp/YODO-unfaithful-reasoning/.venv/lib/python3.12/site-packages/torch/utils/data/dataloader.py:692: UserWarning: 'pin_memory' argument is set as true but not supported on MPS now, device pinned memory won't be used.
+  warnings.warn(warn_msg)
+/Users/praagnya/.pyenv/versions/3.12.1/lib/python3.12/multiprocessing/resource_tracker.py:254: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
